@@ -1,5 +1,5 @@
 {
-  "name": "express-service",
+  "name": "${{values.project-name}}",
   "version": "1.0.0",
   "description": "Production-ready Express.js backend with TypeScript",
   "main": "dist/server.js",

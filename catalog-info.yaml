@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: express-service
+  name: ${{ values.project-name}}
   description: Express.js backend starter template for learning Backstage Scaffolder
   tags:
     - nodejs
@@ -22,7 +22,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: team-backend
+  owner: ${{values.owner}}
   system: backend-services
   providesApis:
     - express-service-api
