@@ -1,0 +1,150 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: express-service
+  description: Express.js backend starter template for learning Backstage Scaffolder
+  tags:
+    - nodejs
+    - typescript
+    - express
+    - postgresql
+    - prisma
+    - rest-api
+    - template
+    - backstage-scaffolder
+  annotations:
+    github.com/project-slug: your-org/express-service
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/your-org/express-service
+      title: GitHub Repository
+      icon: github
+spec:
+  type: service
+  lifecycle: production
+  owner: team-backend
+  system: backend-services
+  providesApis:
+    - express-service-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: express-service-api
+  description: REST API for user management
+  tags:
+    - rest
+    - users
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-backend
+  system: backend-services
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Express Service API
+      version: 1.0.0
+      description: User management REST API
+    servers:
+      - url: http://localhost:3000
+    paths:
+      /health:
+        get:
+          summary: Health check
+          responses:
+            '200':
+              description: Service healthy
+      /api/v1/users:
+        get:
+          summary: List users
+          parameters:
+            - name: page
+              in: query
+              schema:
+                type: integer
+                default: 1
+            - name: limit
+              in: query
+              schema:
+                type: integer
+                default: 10
+            - name: search
+              in: query
+              schema:
+                type: string
+          responses:
+            '200':
+              description: List of users
+        post:
+          summary: Create user
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - email
+                    - name
+                    - password
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    name:
+                      type: string
+                      minLength: 2
+                    password:
+                      type: string
+                      minLength: 8
+          responses:
+            '201':
+              description: User created
+            '409':
+              description: Email already exists
+            '422':
+              description: Validation error
+      /api/v1/users/{id}:
+        get:
+          summary: Get user by ID
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: string
+                format: uuid
+          responses:
+            '200':
+              description: User found
+            '404':
+              description: User not found
+        put:
+          summary: Update user
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: string
+                format: uuid
+          responses:
+            '200':
+              description: User updated
+            '404':
+              description: User not found
+        delete:
+          summary: Delete user
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: string
+                format: uuid
+          responses:
+            '204':
+              description: User deleted
+            '404':
+              description: User not found
