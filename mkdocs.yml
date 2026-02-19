@@ -1,0 +1,7 @@
+site_name: Express Service Documentation
+
+nav:
+  - Overview: docs/index.md
+
+plugins:
+  - techdocs-core
